@@ -17,7 +17,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var currentSummaryLabel: UILabel!
     @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-
+    
+    private let _key: String  = "6a4b2585e421fe05ee0b2ab6ddf256fa"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -26,7 +28,26 @@ class ViewController: UIViewController {
         let factoryModel: ViewFactoryViewModel = ViewFactoryViewModel(model: currentWeather)
         
         displayWeather(using: factoryModel)
+        //# belum manggil
+        let baseUrl: URL?           = URL(string: "https://api.darksky.net/forecast/\(_key)/")
+        let forecastURL:URL?        = URL(fileURLWithPath: "7.2575, 112.7521", relativeTo: baseUrl)
         
+        if let url = forecastURL{
+            do{
+                
+                let weatherData: Data = try Data(contentsOf: url)
+                let weatherString:String =  try String(contentsOf: url)
+                let weatherDataFromString:Data? = weatherString.data(using: String.Encoding.utf8)
+                let json:[String:Any]? = try JSONSerialization.jsonObject(with: weatherDataFromString!, options: []) as? [String:Any]
+//                print(weatherString)
+                if JSONSerialization.isValidJSONObject(json){
+                    print("Valid")
+                }
+            }catch {
+                
+            }
+
+        }
     }
 
     override func didReceiveMemoryWarning() {
