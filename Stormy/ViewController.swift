@@ -8,7 +8,10 @@
 
 import UIKit
 
+
 class ViewController: UIViewController {
+
+
 
     @IBOutlet weak var currentTemperatureLabel: UILabel!
     @IBOutlet weak var currentHumidityLabel: UILabel!
@@ -26,6 +29,24 @@ class ViewController: UIViewController {
         let factoryModel: ViewFactoryViewModel = ViewFactoryViewModel(model: currentWeather)
         
         displayWeather(using: factoryModel)
+        let url:URL = URL(string: "https://api.darksky.net/forecast/6a4b2585e421fe05ee0b2ab6ddf256fa/37.8267,-122.4233")!
+        
+//        do{
+//            
+//            let string:String = try String(contentsOf: url)
+//            print(string)
+//            let data:Data = try Data(contentsOf: url)
+//            let json:[String:Any]  = try JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]
+//            print(json["data"] as! [String])
+//            
+//        }catch{
+//            print(error.localizedDescription)
+//            
+//        }
+   
+        let session = URLSession(configuration: .default)
+        let request = URLRequest(url: url)
+        session.dataTask(with: request, completionHandler: <#T##(Data?, URLResponse?, Error?) -> Void#>)
         
     }
 

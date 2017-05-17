@@ -12,7 +12,7 @@
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "77B6AEA0-A828-4FFB-AB0C-1BB7D4A23F36",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "ff0bb4cb-26e6-4bb7-b847-d276f098bbc6" : "..\/..",
-    "8E90569AA852F2F922CFBFFE753B2611E1CA928D" : "Stormy\/"
+    "8E90569AA852F2F922CFBFFE753B2611E1CA928D" : "ios-stormy\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Stormy",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
