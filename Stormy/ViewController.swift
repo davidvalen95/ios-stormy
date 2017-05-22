@@ -27,7 +27,8 @@ class ViewController: UIViewController {
         let currentWeather = CurrentWeather(temperature: 85.0, humidity: 0.8, precipitationProbability: 0.1, summary: "Hot!", icon: "clear-day")
         
         let factoryModel: ViewFactoryViewModel = ViewFactoryViewModel(model: currentWeather)
-        
+        let button = UIButton()
+    
         displayWeather(using: factoryModel)
         let url:URL = URL(string: "https://api.darksky.net/forecast/6a4b2585e421fe05ee0b2ab6ddf256fa/37.8267,-122.4233")!
         
@@ -43,11 +44,13 @@ class ViewController: UIViewController {
 //            print(error.localizedDescription)
 //            
 //        }
-   
+    
         let session = URLSession(configuration: .default)
         let request = URLRequest(url: url)
-        session.dataTask(with: request, completionHandler: <#T##(Data?, URLResponse?, Error?) -> Void#>)
-        
+        let task = session.dataTask(with: request){ data,response,error in
+            print(String(data: data!, encoding: .utf8))
+        }
+        task.resume()
     }
 
     override func didReceiveMemoryWarning() {
