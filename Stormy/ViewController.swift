@@ -21,36 +21,16 @@ class ViewController: UIViewController {
     @IBOutlet weak var refreshButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 
+    let client = CDarkSkyApiClient()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        let currentWeather = CurrentWeather(temperature: 85.0, humidity: 0.8, precipitationProbability: 0.1, summary: "Hot!", icon: "clear-day")
-        
-        let factoryModel: ViewFactoryViewModel = ViewFactoryViewModel(model: currentWeather)
-        let button = UIButton()
-    
-        displayWeather(using: factoryModel)
-        let url:URL = URL(string: "https://api.darksky.net/forecast/6a4b2585e421fe05ee0b2ab6ddf256fa/37.8267,-122.4233")!
-        
-//        do{
-//            
-//            let string:String = try String(contentsOf: url)
-//            print(string)
-//            let data:Data = try Data(contentsOf: url)
-//            let json:[String:Any]  = try JSONSerialization.jsonObject(with: data, options: []) as! [String:Any]
-//            print(json["data"] as! [String])
-//            
-//        }catch{
-//            print(error.localizedDescription)
-//            
-//        }
-    
-        let session = URLSession(configuration: .default)
-        let request = URLRequest(url: url)
-        let task = session.dataTask(with: request){ data,response,error in
-            print(String(data: data!, encoding: .utf8))
+        client.getCurrentWeather(){ [unowned self]weather,error in
+            if let currentWeather = weather{
+                let viewModel = ViewFactoryViewModel(model: currentWeather)
+                self.displayWeather(using: viewModel)
+            }
         }
-        task.resume()
     }
 
     override func didReceiveMemoryWarning() {
