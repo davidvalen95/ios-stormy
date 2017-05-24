@@ -24,13 +24,14 @@ class ViewController: UIViewController {
     let client = CDarkSkyApiClient()
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-        client.getCurrentWeather(){ [unowned self]weather,error in
-            if let currentWeather = weather{
-                let viewModel = ViewFactoryViewModel(model: currentWeather)
-                self.displayWeather(using: viewModel)
-            }
-        }
+        self.currentTemperatureLabel.text = "1"
+
+        activityIndicator.hidesWhenStopped = true
+        refreshButton.addTarget(self, action: #selector(self.refreshButtonFunction(sender:)), for: UIControlEvents.touchUpInside)
+        
+        refreshButtonFunction(sender: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,11 +40,45 @@ class ViewController: UIViewController {
     }
     
     func displayWeather(using viewModel: ViewFactoryViewModel){
-        currentTemperatureLabel.text = viewModel.temperature
-        currentHumidityLabel.text = viewModel.humidity
-        currentPrecipitationLabel.text = viewModel.precipitationProbability
-        currentSummaryLabel.text = viewModel.summary
-        currentWeatherIcon.image = viewModel.icon
+        DispatchQueue.main.async {
+            self.currentTemperatureLabel.text = viewModel.temperature
+            self.currentHumidityLabel.text = viewModel.humidity
+            self.currentPrecipitationLabel.text = viewModel.precipitationProbability
+            self.currentSummaryLabel.text = viewModel.summary
+            self.currentWeatherIcon.image = viewModel.icon
+        }
+       
+    }
+  
+    func refreshButtonFunction(sender: UIButton?){
+        togleRefreshAnimation(on: true)
+        client.getCurrentWeather(){ [unowned self]weather,error in
+            if let currentWeather = weather{
+                let viewModel = ViewFactoryViewModel(model: currentWeather)
+                DispatchQueue.main.async {
+                    self.displayWeather(using: viewModel)
+                    DispatchQueue.global(qos: .userInitiated).async{
+                        sleep(3)
+                        DispatchQueue.main.async {
+                            self.togleRefreshAnimation(on: false)
+                        }
+                    }
+                    
+                }
+                
+            }
+        }
+
+    }
+    
+    func togleRefreshAnimation(on: Bool){
+        refreshButton.isHidden = on
+        
+        if on{
+            activityIndicator.startAnimating()
+        }else{
+            activityIndicator.stopAnimating()
+        }
     }
 }
 

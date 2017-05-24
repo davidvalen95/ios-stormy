@@ -12,7 +12,7 @@ class CDarkSkyApiClient{
         fileprivate let apiKey = "6a4b2585e421fe05ee0b2ab6ddf256fa"
     
     lazy var baseUrl: URL = {
-        let url:URL = URL(string: "https://api.darksky.net/forecast/\(self.apiKey)/37.8267,-122.4233")!
+        let url:URL = URL(string: "https://api.darksky.net/forecast/\(self.apiKey)/-7.276202,-112.782013")!
         return url
     }()
     let downloader = CJSonDownloader()
